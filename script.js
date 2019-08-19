@@ -64,12 +64,6 @@ class Unicellular extends Stuff {
         let foodIndex = 0;
         let foodIsIntoxicated = false;
 
-        // let vector = value + this.direction;
-
-        // if (vector > 7) {
-        //     vector = vector - 8;
-        // }
-
         if (this.direction == value){
             switch(value){
                 case 0:
@@ -101,32 +95,52 @@ class Unicellular extends Stuff {
                     nextPositionY--;
                     break;
             }
-            if (nextPositionX < 0 || nextPositionX >= MAIN_WIDTH 
-                || nextPositionY < 0 || nextPositionY >= MAIN_HEIGHT){
-                    type = 1;
-            } else {
-                for (let index in unicellulars){
-                    if (unicellulars[index].positionX == nextPositionX 
-                        && unicellulars[index].positionY == nextPositionY){
-                            type = 3;
-                            break;
-                    }
+
+            if (nextPositionX < 0) {
+                nextPositionX = MAIN_WIDTH;
+            }
+
+            if (nextPositionX > MAIN_WIDTH) {
+                nextPositionX = 0;
+            }
+
+            if (nextPositionY < 0) {
+                nextPositionY = MAIN_HEIGHT;
+            }
+
+            if (nextPositionY > MAIN_HEIGHT){
+                nextPositionY = 0;
+            }
+
+            for (let index in walls){
+                if (walls[index].positionX == nextPositionX 
+                    && walls[index].positionY == nextPositionY){
+                        type = 1;
+                        break;
                 }
-    
-                for (let index in foods){
-                    if (foods[index].positionX == nextPositionX 
-                        && foods[index].positionY == nextPositionY){
-                            foodIsIntoxicated = foods[index].isIntoxicated;
-                            
-                            if (foodIsIntoxicated){
-                                type = 4;
-                            } else {
-                                type = 2;
-                            }
-    
-                            foodIndex = index;
-                            break;
-                    }
+            }
+            
+            for (let index in unicellulars){
+                if (unicellulars[index].positionX == nextPositionX 
+                    && unicellulars[index].positionY == nextPositionY){
+                        type = 3;
+                        break;
+                }
+            }
+
+            for (let index in foods){
+                if (foods[index].positionX == nextPositionX 
+                    && foods[index].positionY == nextPositionY){
+                        foodIsIntoxicated = foods[index].isIntoxicated;
+                        
+                        if (foodIsIntoxicated){
+                            type = 4;
+                        } else {
+                            type = 2;
+                        }
+
+                        foodIndex = index;
+                        break;
                 }
             }
         }   
@@ -234,32 +248,35 @@ class Unicellular extends Stuff {
                 break;
         }
 
-        if (takePositionX < 0 || takePositionX >= MAIN_WIDTH 
-            || takePositionY < 0 || takePositionY >= MAIN_HEIGHT){
-                type = 1;
-        } else {
-            for (let index in foods){
-                if (foods[index].positionX == takePositionX 
-                    && foods[index].positionY == takePositionY){
-                        foodIsIntoxicated = foods[index].isIntoxicated;
-                            
-                        if (foodIsIntoxicated){
-                            type = 4;
-                        } else {
-                            type = 2;
-                        }
-
-                        foodIndex = index;
-                        break;
-                }
+        for (let index in walls){
+            if (walls[index].positionX == takePositionX 
+                && walls[index].positionY == takePositionY){
+                    type = 1;
+                    break;
             }
+        }
 
-            for (let index in unicellulars){
-                if (unicellulars[index].positionX == takePositionX 
-                    && unicellulars[index].positionY == takePositionY){
-                        type = 3;
-                        break;
-                }
+        for (let index in foods){
+            if (foods[index].positionX == takePositionX 
+                && foods[index].positionY == takePositionY){
+                    foodIsIntoxicated = foods[index].isIntoxicated;
+                        
+                    if (foodIsIntoxicated){
+                        type = 4;
+                    } else {
+                        type = 2;
+                    }
+
+                    foodIndex = index;
+                    break;
+            }
+        }
+
+        for (let index in unicellulars){
+            if (unicellulars[index].positionX == takePositionX 
+                && unicellulars[index].positionY == takePositionY){
+                    type = 3;
+                    break;
             }
         }
 
@@ -335,30 +352,34 @@ class Unicellular extends Stuff {
                 break;
         }
 
-        if (takePositionX < 0 || takePositionX >= MAIN_WIDTH || takePositionY < 0 || takePositionY >= MAIN_HEIGHT){
-                type = 1;
-        } else {
-            for (let index in foods){
-                if (foods[index].positionX == takePositionX 
-                    && foods[index].positionY == takePositionY){
-                        foodIsIntoxicated = foods[index].isIntoxicated;
-                            
-                        if (foodIsIntoxicated){
-                            type = 4;
-                        } else {
-                            type = 2;
-                        }
-
-                        break;
-                }
+        for (let index in walls){
+            if (walls[index].positionX == takePositionX 
+                && walls[index].positionY == takePositionY){
+                    type = 1;
+                    break;
             }
+        }
 
-            for (let index in unicellulars){
-                if (unicellulars[index].positionX == takePositionX 
-                    && unicellulars[index].positionY == takePositionY){
-                        type = 3;
-                        break;
-                }
+        for (let index in foods){
+            if (foods[index].positionX == takePositionX 
+                && foods[index].positionY == takePositionY){
+                    foodIsIntoxicated = foods[index].isIntoxicated;
+                        
+                    if (foodIsIntoxicated){
+                        type = 4;
+                    } else {
+                        type = 2;
+                    }
+
+                    break;
+            }
+        }
+
+        for (let index in unicellulars){
+            if (unicellulars[index].positionX == takePositionX 
+                && unicellulars[index].positionY == takePositionY){
+                    type = 3;
+                    break;
             }
         }
 
@@ -402,8 +423,8 @@ class Unicellular extends Stuff {
     healthUp(){
         this.health += 10;
 
-        if (this.health > 100){
-            this.health = 100;
+        if (this.health > 200){
+            this.health = 200;
         }
     }
 
@@ -449,37 +470,41 @@ class Food extends Stuff {
 Food.count = 0;
 
 class Wall extends Stuff {
-    constructor(context, positionX, positionY, isIntoxicated){
+    constructor(context, positionX, positionY){
         super(context, positionX, positionY);
         this.context = context;
         this.positionX = positionX;
         this.positionY = positionY;
-        this.isIntoxicated = isIntoxicated
     }
 
     getColor(){
-        return 'brown';
+        return 'black';
     }
 }
+Wall.count = 0;
 
-let unicellulars = {};
+const unicellulars = {};
 const stuffs = {};
 const foods = {};
+const walls = {};
 
 const MAIN_WIDTH = 60;
-const MAIN_HEIGHT = 25;
+const MAIN_HEIGHT = 35;
 const BLOCK_WIDTH = 20;
 const BLOCK_HEIGHT = 20;
 const VIEW_HEIGHT = MAIN_HEIGHT * BLOCK_HEIGHT;
 const VIEW_WIDHT = MAIN_WIDTH * BLOCK_WIDTH;
 const UNICELLULAR_COUNT = 60;
-const UNICELLULAR_CHILDREN = 10;
+const UNICELLULAR_CHILDREN = 4;
 const HEALTH = 100;
 const FOOD_COUNT = 150;
+const INTOXICATE_PROB = 20;
+const WALL_COUNT = 150;
 let totalIterations = 0;
 let totalGenerations = 1;
 let totalSurvivors = 0;
 let isPaused = true;
+let saveEnabled = false;
 
 
 
@@ -518,7 +543,7 @@ totalIterationText.style.color = '#FFF';
 totalGenerationText.style.color = '#FFF';
 totalSurvivorText.style.color = '#FFF';
 
-if ('unicellulars' in localStorage){
+if ('unicellulars' in localStorage && saveEnabled){
     const unicsStors = JSON.parse(localStorage['unicellulars']);
     for (const index in unicsStors){
         unicellulars[index] = new Unicellular(context, unicsStors[index].positionX, unicsStors[index].positionY, unicsStors[index].iterator);
@@ -551,12 +576,19 @@ while (Food.count < FOOD_COUNT) {
     const newPosition = getNewPosition();
     let isIntoxicated = false;
 
-    if (getRandomInt(0, 10) > 6){
+    if (!(getRandomInt(0, 100) > INTOXICATE_PROB)){
         isIntoxicated = true;
     }
     
     foods[Food.count++] = new Food(context, newPosition.x,
         newPosition.y, isIntoxicated);
+}
+
+while (Wall.count < WALL_COUNT) {
+    const newPosition = getNewPosition();
+    
+    walls[Wall.count++] = new Wall(context, newPosition.x,
+        newPosition.y);
 }
 
 
@@ -583,7 +615,7 @@ function iterations() {
 
             let isIntoxicated = false;
 
-            if (getRandomInt(0, 10) > 6){
+            if (!(getRandomInt(0, 100) > INTOXICATE_PROB)){
                 isIntoxicated = true;
             }
 
@@ -600,7 +632,7 @@ function iterations() {
             let newUnicellularsCount = 0;
             totalGenerations++;
 
-            if (survivor > 0){
+            if (survivor > 0 && saveEnabled){
                 localStorage['unicellulars'] = JSON.stringify(unicellulars);
             } 
 
@@ -670,6 +702,10 @@ async function updateCanvas(){
     for (const index in foods){
         foods[index].draw();
     }
+
+    for (const index in walls){
+        walls[index].draw();
+    }
 }
 
 function getRandomInt(min, max) {
@@ -708,6 +744,15 @@ function getNewPosition(){
         if (unique) {
             for (let index in foods) {
                 if(foods[index].positionX == position.x && foods[index].positionY == position.y) {
+                    unique = false;
+                    break;
+                }
+            }
+        }
+
+        if (unique) {
+            for (let index in walls) {
+                if(walls[index].positionX == position.x && walls[index].positionY == position.y) {
                     unique = false;
                     break;
                 }
